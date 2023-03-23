@@ -21,21 +21,33 @@ class RegistrationFormType extends AbstractType
     {
         $builder
             ->add('email', EmailType::class, [
-
+                'label' => "L'adresse mail de votre entreprise :"
             ])
             ->add('name', TextType::class, [
-                'attr' => [
-                    'class' => ''
-                ]
+                'label' => 'Le nom de l\'entreprise :'
             ])
             ->add('plainPassword', RepeatedType::class, [
+                'required' => false,
                 'type' => PasswordType::class,
                 'invalid_message' => 'Vous n\'avez pas tapé deux fois le même mot de passe ',
+                'first_name' => 'first',
+                'second_name' => 'second',
                 'first_options' => [
-                    'label' => 'Votre mot de passe :'
+
+                    'label' => 'Votre mot de passe :',
+                    'attr' => [
+                        'class' => 'd-flex form-control'
+                    ],
+
                 ],
                 'second_options' => [
-                  'label' => 'Confirmer votre mot de passe :'
+                    'label' => 'Confirmer votre mot de passe :',
+                    'label_attr' => [
+                        'class' => 'mt-1',
+                    ],
+                    'attr' => [
+                        'class' => 'form-control',
+                    ],
                 ],
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
@@ -43,17 +55,16 @@ class RegistrationFormType extends AbstractType
                 'attr' => ['autocomplete' => 'new-password'],
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Please enter a password',
+                        'message' => 'Merci d\'entrer un mot de passe',
                     ]),
                     new Length([
                         'min' => 6,
-                        'minMessage' => 'Your password should be at least {{ limit }} characters',
+                        'minMessage' => 'Votre mot de passe doit faire au moins {{ limit }} caractères',
                         // max length allowed by Symfony for security reasons
                         'max' => 4096,
                     ]),
                 ],
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

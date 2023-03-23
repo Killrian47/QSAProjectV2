@@ -3,15 +3,50 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
-    <h1>Register</h1>
+    <div class="d-flex justify-content-center align-items-center flex-column ">
+        <div class="form-container col-5 mt-5">
+            <h1 class="h3 text-center font-weight-normal mb-3">Enregistrez vous</h1>
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-{#        {{ form_row(registrationForm.agreeTerms) }}#}
+            {{ form_start(registrationForm) }}
 
-        <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
+            <div class=" mt-1">
+                {{ form_label(registrationForm.name) }}
+                <div class="errors mt-1">
+                    {{ form_errors(registrationForm.name) }}
+                </div>
+                {{ form_widget(registrationForm.name, { attr : { class : 'form-control'}}) }}
+            </div>
+
+            <div class=" mt-1">
+                {{ form_label(registrationForm.email) }}
+                <div class="errors mt-1">
+                    {{ form_errors(registrationForm.email) }}
+                </div>
+                {{ form_widget(registrationForm.email, { attr : { class : 'form-control'}}) }}
+            </div>
+
+            <div class=" mt-1">
+                {{ form_label(registrationForm.plainPassword.first) }}
+                <div class="errors mt-1">
+                    {{ form_errors(registrationForm.plainPassword.first) }}
+                </div>
+                {{ form_widget(registrationForm.plainPassword.first) }}
+            </div>
+
+            <div class=" mt-1">
+                {{ form_label(registrationForm.plainPassword.second) }}
+                <div class="errors mt-1">
+                    {{ form_errors(registrationForm.plainPassword.second) }}
+                </div>
+                {{ form_widget(registrationForm.plainPassword.second) }}
+            </div>
+
+            <div class="mt-3">
+                <i>Votre entreprise est déjà inscrite ? <a href="{{ path('app_login') }}">Connectez vous</a></i>
+            </div>
+
+            <button type="submit" class="btn qsa-btn mt-3">S'inscrire</button>
+            {{ form_end(registrationForm) }}
+        </div>
+    </div>
 {% endblock %}
