@@ -1,0 +1,17 @@
+<header>
+    <header>
+        <div class="d-flex justify-content-center">
+            <img src="{{ asset('assets/images/LOGO-QSA-CONSEIL.png') }}" class="qsa-logo" alt="Logo QSA">
+        </div>
+        <div class="qsa-nav-bar mt-2">
+            {% if app.user %}
+                <ul class="d-flex justify-content-center">
+                    <li class="p-2 qsa-link"><a href="{{ path('app_home') }}" class=" qsa-link-header">Toutes vos analyses</a></li>
+                    <li class="p-2 qsa-link"><a href="{{ path('app_home') }}" class=" qsa-link-header">Envoyer de nouvelles analyse</a></li>
+                </ul>
+
+            {% endif %}
+        </div>
+
+    </header>
+</header>
