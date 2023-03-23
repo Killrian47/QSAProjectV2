@@ -22,23 +22,36 @@ class OrderController extends AbstractController
      * @throws ORMException
      */
     #[Route('/order', name: 'app_order')]
-//    #[IsGranted()]
-    public function index(EntityManagerInterface $manager,Request $request): Response
+    public function index(EntityManagerInterface $manager, Request $request): Response
     {
         // mettre compteur pour ne pas créer plusieurs commandes !
-        if ($this->getUser()) {
-            if ($this->getUser()->getId() === 1) {
-                dd('test');
-            } else {
-                $order = new Order;
-                $order->setEntreprise($this->getUser());
-                $manager->persist($order);
-                $manager->flush();
-            }
-        }
+        $count =0;
         $echantillon = new Echantillon;
         $form = $this->createForm(EchantillonType::class, $echantillon);
         $form->handleRequest($request);
+        if ($this->getUser()) {
+
+            if ($form->isSubmitted()) {
+                $user = $this->getUser();
+                $order = new Order();
+
+                if ($count <= 0) {
+                    $order->setEntreprise($user);
+                    $order->setIsExported(false);
+                    $manager->persist($order);
+                    $manager->flush();
+
+                }
+                $echantillon->setEntreprise($user);
+                $echantillon->setNumberOrder($order);
+
+                $manager->persist($echantillon);
+                $manager->flush();
+
+            }
+        } else {
+            return $this->redirectToRoute('app_login');
+        }
 
 
         return $this->render('order/index.html.twig', [
