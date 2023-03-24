@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Repository\EchantillonRepository;
+use App\Repository\OrderRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -9,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function index(): Response
+    public function index(EchantillonRepository $echantillonRepository, OrderRepository $orderRepository): Response
     {
         if ($this->getUser() === null) {
             return $this->redirectToRoute('app_login');
@@ -20,8 +22,17 @@ class HomeController extends AbstractController
             return $this->redirectToRoute('app_edit_password');
         }
 
+        $echantillons = [];
+        $user = $this->getUser();
+        $orders = $orderRepository->findBy(['entreprise' => $user]);
+        foreach ($orders as $order) {
+            $echantillons[] = $echantillonRepository->findBy(['numberOrder' => $order]);
+        }
+
         return $this->render('home/index.html.twig', [
             'controller_name' => 'HomeController',
+            'echantillons' => $echantillons,
+            'orders' => $orders,
         ]);
     }
 }
