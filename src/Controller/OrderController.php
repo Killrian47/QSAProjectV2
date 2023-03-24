@@ -22,7 +22,7 @@ class OrderController extends AbstractController
      * @throws ORMException
      */
     #[Route('/order', name: 'app_order')]
-    public function index(EntityManagerInterface $manager, Request $request): Response
+    public function index(EntityManagerInterface $manager): Response
     {
         if ($this->getUser() === null) {
             return $this->redirectToRoute('app_login');
@@ -32,41 +32,50 @@ class OrderController extends AbstractController
             $this->addFlash('warning', 'Vous devez changer votre mot de passe avant de pouvoir naviguer sur le site');
             return $this->redirectToRoute('app_edit_password');
         }
+        $user = $this->getUser();
+        $order = new Order();
+        $order->setEntreprise($user);
+        $order->setIsExported(false);
 
-        // mettre compteur pour ne pas créer plusieurs commandes !
-        $count =0;
+        $manager->persist($order);
+        $manager->flush();
+
+        return $this->redirectToRoute('app_add_echantillon', [
+            'id' => $order->getId(),
+        ]);
+
+//        return $this->render('order/index.html.twig', [
+//
+//        ]);
+    }
+
+    #[Route('/order/{id}', name: 'app_add_echantillon')]
+    public function addEchantillon(Request $request, Order $order, EntityManagerInterface $manager)
+    {
         $echantillon = new Echantillon;
         $form = $this->createForm(EchantillonType::class, $echantillon);
         $form->handleRequest($request);
-        if ($this->getUser()) {
 
-            if ($form->isSubmitted()) {
-                $user = $this->getUser();
-                $order = new Order();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $echantillon->setEntreprise($this->getUser());
+            $echantillon->setNumberOrder($order);
+            $echantillon->setConditionnement($form->get('conditionnement')->getData());
+            $echantillon->setDateOfManufacturing($form->get('dateOfManufacturing')->getData());
+            $echantillon->setTempEnceinte($form->get('tempEnceinte')->getData());
+            $echantillon->setFournisseur($form->get('fournisseur')->getData());
+            $echantillon->setTempProduct($form->get('tempProduct')->getData());
+            $echantillon->setDatePrelevement($form->get('datePrelevement')->getData());
+            $echantillon->setDlcDluo($form->get('DlcDluo')->getData());
 
-                if ($count <= 0) {
-                    $order->setEntreprise($user);
-                    $order->setIsExported(false);
-                    $manager->persist($order);
-                    $manager->flush();
-
-                }
-
-                $echantillon->setEntreprise($user);
-                $echantillon->setNumberOrder($order);
-
-                $manager->persist($echantillon);
-                $manager->flush();
-
-            }
-        } else {
-            return $this->redirectToRoute('app_login');
+            $manager->persist($echantillon);
+            $manager->flush();
+            return $this->redirectToRoute('app_add_echantillon', [
+                'id' => $order->getId(),
+            ]);
         }
 
-
         return $this->render('order/index.html.twig', [
-            'controller_name' => 'OrderController',
-            'form' => $form->createView(),
+            'form' => $form->createView()
         ]);
     }
 }
