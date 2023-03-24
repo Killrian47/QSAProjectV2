@@ -40,6 +40,9 @@ class Entreprise implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'entreprise', targetEntity: Echantillon::class)]
     private Collection $echantillons;
 
+    #[ORM\Column]
+    private ?bool $firstConnection = null;
+
     public function __construct()
     {
         $this->orders = new ArrayCollection();
@@ -191,5 +194,17 @@ class Entreprise implements UserInterface, PasswordAuthenticatedUserInterface
     public function __toString()
     {
         return $this->name;
+    }
+
+    public function isFirstConnection(): ?bool
+    {
+        return $this->firstConnection;
+    }
+
+    public function setFirstConnection(bool $firstConnection): self
+    {
+        $this->firstConnection = $firstConnection;
+
+        return $this;
     }
 }

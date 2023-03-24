@@ -15,6 +15,10 @@ class HomeController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
+        if ($this->getUser()->isFirstConnection() === true) {
+            return $this->redirectToRoute('app_edit_password');
+        }
+
         return $this->render('home/index.html.twig', [
             'controller_name' => 'HomeController',
         ]);

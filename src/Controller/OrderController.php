@@ -24,6 +24,14 @@ class OrderController extends AbstractController
     #[Route('/order', name: 'app_order')]
     public function index(EntityManagerInterface $manager, Request $request): Response
     {
+        if ($this->getUser() === null) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        if ($this->getUser()->isFirstConnection() === true) {
+            return $this->redirectToRoute('app_edit_password');
+        }
+
         // mettre compteur pour ne pas créer plusieurs commandes !
         $count =0;
         $echantillon = new Echantillon;
@@ -42,6 +50,7 @@ class OrderController extends AbstractController
                     $manager->flush();
 
                 }
+
                 $echantillon->setEntreprise($user);
                 $echantillon->setNumberOrder($order);
 
