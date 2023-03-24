@@ -5,62 +5,38 @@ namespace App\Controller;
 use App\Entity\Echantillon;
 use App\Entity\Order;
 use App\Form\EchantillonType;
-use Doctrine\ORM\EntityManager;
+use App\Repository\EchantillonRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Exception\ORMException;
-use Doctrine\ORM\OptimisticLockException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-class OrderController extends AbstractController
+class EchantillonController extends AbstractController
 {
-    /**
-     * @throws OptimisticLockException
-     * @throws ORMException
-     */
-    #[Route('/order', name: 'app_order')]
-    public function index(EntityManagerInterface $manager): Response
+    #[Route('/commande/{id}', name: 'app_details_order')]
+    public function index(Order $order, EchantillonRepository $echantillonRepository): Response
     {
-        if ($this->getUser() === null) {
-            return $this->redirectToRoute('app_login');
-        }
+        $echantillons = $echantillonRepository->findBy(['numberOrder'=> $order->getId()]);
 
-        if ($this->getUser()->isFirstConnection() === true) {
-            $this->addFlash('warning', 'Vous devez changer votre mot de passe avant de pouvoir naviguer sur le site');
-            return $this->redirectToRoute('app_edit_password');
-        }
-
-//        dd($this->getUser()->getRoles());
-        $roles = ["ROLE_ADMIN", "ROLE_USER"];
-
-        if ($this->getUser()->getRoles() === $roles) {
-            $this->addFlash('danger', 'En tant qu\'administrateur du site vous ne pouvez pas créer de bon de commande ');
-            return $this->redirectToRoute('app_home');
-        }
-
-        $user = $this->getUser();
-        $order = new Order();
-        $order->setEntreprise($user);
-        $order->setIsExported(false);
-
-        $manager->persist($order);
-        $manager->flush();
-
-        return $this->redirectToRoute('app_add_echantillon', [
-            'id' => $order->getId(),
+        return $this->render('echantillon/index.html.twig', [
+            'order' => $order,
+            'echantillons' => $echantillons,
         ]);
-
     }
 
-    #[Route('/order/{id}', name: 'app_add_echantillon')]
-    public function addEchantillon(Request $request, Order $order, EntityManagerInterface $manager)
+    #[Route('/ajouter-echantillon-manquant/{id}', name: 'app_add_missing_echantillon')]
+    public function addEchantillonBeforeExportation(Order $order,EntityManagerInterface $manager, Request $request)
     {
         $echantillon = new Echantillon;
         $form = $this->createForm(EchantillonType::class, $echantillon);
         $form->handleRequest($request);
+
+        if ($order->isIsExported() === true) {
+            $this->addFlash('info', 'Ce bon de commande à déjà été exporté par QSA');
+            return $this->redirectToRoute('app_home');
+        }
 
         if ($form->isSubmitted() && $form->isValid()) {
             $echantillon->setEntreprise($this->getUser());
@@ -75,7 +51,7 @@ class OrderController extends AbstractController
 
             $manager->persist($echantillon);
             $manager->flush();
-            return $this->redirectToRoute('app_add_echantillon', [
+            return $this->redirectToRoute('app_details_order', [
                 'id' => $order->getId(),
             ]);
         }
@@ -84,4 +60,5 @@ class OrderController extends AbstractController
             'form' => $form->createView()
         ]);
     }
+
 }

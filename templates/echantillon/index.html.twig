@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails commande | {{ parent() }}{% endblock %}
+
+{% block body %}
+    <h1>Numéro de commande {{ order.id }}</h1>
+    <a href="{{ path('app_home') }}">Retour à l'accueil</a>
+    {% for echantillon in echantillons %}
+        {{ dump(echantillon) }}
+    {% endfor %}
+    {% if order.isExported == 0 %}
+        <a href="{{ path('app_add_missing_echantillon', {'id': order.id}) }}">Ajouter de nouveaux échantillons</a>
+    {% endif %}
+{% endblock %}
