@@ -27,6 +27,7 @@ class AccountController extends AbstractController
         }
 
         if ($this->getUser()->isFirstConnection() === true) {
+            $this->addFlash('warning', 'Vous devez changer votre mot de passe avant de pouvoir naviguer sur le site');
             return $this->redirectToRoute('app_edit_password');
         }
 

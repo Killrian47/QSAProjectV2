@@ -24,7 +24,7 @@ class RegistrationFormType extends AbstractType
                 'label' => "L'adresse mail de votre entreprise :",
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Veuillez mettre une adresse mail'
+                        'message' => 'Veuillez enregistrer l\'adresse mail de votre entreprise'
                     ])
                 ],
                 'required' => false
@@ -33,7 +33,7 @@ class RegistrationFormType extends AbstractType
                 'label' => 'Le nom de l\'entreprise :',
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Veuillez enregistrer un nom pour votre entreprise'
+                        'message' => 'Veuillez enregistrer le nom de votre entreprise'
                     ])
                 ],
                 'required' => false
@@ -67,7 +67,7 @@ class RegistrationFormType extends AbstractType
                 'attr' => ['autocomplete' => 'new-password'],
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Merci d\'entrer un mot de passe',
+                        'message' => 'Veuillez entrer un mot de passe',
                     ]),
                     new Length([
                         'min' => 6,
