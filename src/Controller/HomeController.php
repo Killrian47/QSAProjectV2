@@ -29,10 +29,13 @@ class HomeController extends AbstractController
             $echantillons[] = $echantillonRepository->findBy(['numberOrder' => $order]);
         }
 
+        $adminView = $orderRepository->findAll();
+
         return $this->render('home/index.html.twig', [
             'controller_name' => 'HomeController',
             'echantillons' => $echantillons,
             'orders' => $orders,
+            'adminView' => $adminView,
         ]);
     }
 }
