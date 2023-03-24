@@ -21,15 +21,27 @@ class RegistrationFormType extends AbstractType
     {
         $builder
             ->add('email', EmailType::class, [
-                'label' => "L'adresse mail de votre entreprise :"
+                'label' => "L'adresse mail de votre entreprise :",
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez mettre une adresse mail'
+                    ])
+                ],
+                'required' => false
             ])
             ->add('name', TextType::class, [
-                'label' => 'Le nom de l\'entreprise :'
+                'label' => 'Le nom de l\'entreprise :',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez enregistrer un nom pour votre entreprise'
+                    ])
+                ],
+                'required' => false
             ])
             ->add('plainPassword', RepeatedType::class, [
                 'required' => false,
                 'type' => PasswordType::class,
-                'invalid_message' => 'Vous n\'avez pas tapé deux fois le même mot de passe ',
+                'invalid_message' => 'Les deux mot de passe doivent être identiques',
                 'first_name' => 'first',
                 'second_name' => 'second',
                 'first_options' => [
@@ -64,6 +76,7 @@ class RegistrationFormType extends AbstractType
                         'max' => 4096,
                     ]),
                 ],
+
             ]);
     }
 

@@ -35,7 +35,7 @@ class ChangePasswordType extends AbstractType
             ])
             ->add('old_password', PasswordType::class, [
                 'mapped' => false,
-                'label' => 'Mot de passe actuel',
+                'label' => 'Votre mot de passe actuel :',
                 'attr' => [
                     'placeholder' => 'Veuillez saisir votre mot de passe actuel',
                     'class' => 'form-control',
@@ -44,7 +44,8 @@ class ChangePasswordType extends AbstractType
                     new NotBlank([
                         'message' => 'Merci d\'entrer votre ancien mot de passe',
                     ]),
-                ]
+                ],
+                'required' => false,
             ])
             ->add('new_password', RepeatedType::class, [
 //                'required' => false,
@@ -77,7 +78,7 @@ class ChangePasswordType extends AbstractType
                 'attr' => ['autocomplete' => 'new-password'],
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Merci d\'entrer un mot de passe',
+                        'message' => 'Merci d\'entrer votre nouveau mot de passe',
                     ]),
                     new Length([
                         'min' => 6,
@@ -86,6 +87,7 @@ class ChangePasswordType extends AbstractType
                         'max' => 4096,
                     ]),
                 ],
+                'required' => false,
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Mettre à jour',

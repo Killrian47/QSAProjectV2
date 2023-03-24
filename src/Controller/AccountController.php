@@ -23,9 +23,12 @@ class AccountController extends AbstractController
     public function index(): Response
     {
         if ($this->getUser() === null) {
-            $this->redirectToRoute('app_login');
+            return $this->redirectToRoute('app_login');
         }
 
+        if ($this->getUser()->isFirstConnection() === true) {
+            return $this->redirectToRoute('app_edit_password');
+        }
 
         return $this->render('account/index.html.twig', [
             'controller_name' => 'AccountController',
@@ -45,12 +48,14 @@ class AccountController extends AbstractController
                 $new_pwd = $form->get('new_password')->getData();
                 $password = $encoder->hashPassword($user, $new_pwd);
                 $user->setPassword($password);
+                $user->setFirstConnection(false);
 
                 $this->entityManager->flush();
                 $this->addFlash('success', 'Votre mot de passe a bien été mis a jour');
             } else {
                 $this->addFlash('danger', 'Votre mot de passe actuel n\'est pas correct');
             }
+            return $this->redirectToRoute('app_home');
         }
 
         return $this->render('account/password.html.twig', [
