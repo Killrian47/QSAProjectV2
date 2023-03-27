@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Reset your password{% endblock %}
+{% block title %}Réinitialiser votre mot de passe | {{ parent() }}{% endblock %}
 
 {% block body %}
     <div class="d-flex justify-content-center align-items-center flex-column">
-        <div class="col-5 mt-5 form-container">
+        <div class="col-11 col-md-8 col-lg-5 mt-5 form-container">
             <h2 class="text-center">Réinitialiser votre mot de passe</h2>
 
             {% for flash_error in app.flashes('reset_password_error') %}
@@ -22,6 +22,10 @@
             <div class="mt-1 ms-2">
                 <small>Entrez votre adresse mail et nous vous enverrons un mail pour réinitialiser votre mot de
                     passe</small>
+            </div>
+
+            <div class="mt-1">
+                <i>Vous vous êtes trompé de bouton ? <a href="{{ path('app_login') }}">Retourner à la page de connexion</a></i>
             </div>
 
             <button class="btn qsa-btn mt-3 ">Envoyer le mail</button>

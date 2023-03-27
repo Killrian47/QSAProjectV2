@@ -3,7 +3,7 @@
 {% block title %}Accueil | {{ parent() }}{% endblock %}
 
 {% block body %}
-    <div class="w-50 mx-auto">
+    <div class="blocks-container">
         {% for role in app.user.roles %}
             {% if role == 'ROLE_ADMIN' %}
                 {% for order in adminView %}
@@ -22,7 +22,7 @@
             {% if countEchantillons == 0 %}
 
             {% else %}
-                <div class="form-container mb-3 mt-2">
+                <div class="block-container mb-3 mt-2">
                     <p>Numéro du bon de commande : <strong>{{ order.id }}</strong></p>
 
                     <p>Vous avez envoyé {{ countEchantillons }} échantillons</p>
