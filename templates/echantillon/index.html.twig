@@ -9,6 +9,14 @@
         {{ dump(echantillon) }}
     {% endfor %}
     {% if order.isExported == 0 %}
-        <a href="{{ path('app_add_missing_echantillon', {'id': order.id}) }}">Ajouter de nouveaux échantillons</a>
+        {% if app.user.id == order.entreprise.id %}
+            <a href="{{ path('app_add_missing_echantillon', {'id': order.id}) }}">Ajouter de nouveaux échantillons</a>
+        {% endif %}
+        {% for role in app.user.roles %}
+            {% if role == 'ROLE_ADMIN' %}
+                <a class="btn btn-primary" href="{{ path('export_order', {'id': order.id}) }}">Exporter les échantillons en XLSX</a>
+            {% endif %}
+        {% endfor %}
+        {% else %}
     {% endif %}
 {% endblock %}
