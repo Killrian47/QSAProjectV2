@@ -5,13 +5,39 @@
 {% block header %}
     <header>
         <header>
-            <div class="d-flex justify-content-center">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light d-md-none">
+                <div class="container-fluid">
+                    <div class="d-flex justify-content-center">
+                        <img src="{{ asset('assets/images/LOGO-QSA-CONSEIL.png') }}" class="qsa-logo" alt="Logo QSA">
+                    </div>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link" aria-current="page" href="{{ path('app_home') }}">Toutes vos analyses / Accueil</a>
+                            </li>
+{#                            <li class="nav-item">#}
+{#                                <a class="nav-link" href="{{ path('app_order') }}">Envoyer de nouveaux échantillons</a>#}
+{#                            </li>#}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('app_account') }}">Mon compte</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('app_logout') }}">Se déconnecter</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <div class="d-none d-md-flex justify-content-center">
                 <img src="{{ asset('assets/images/LOGO-QSA-CONSEIL.png') }}" class="qsa-logo" alt="Logo QSA">
             </div>
-            <div class="qsa-nav-bar mt-2">
+            <div class="d-none d-md-block qsa-nav-bar mt-2">
                 {% if app.user %}
                     <ul class="d-flex justify-content-center">
-                        <li class="p-2 qsa-link"><a href="{{ path('app_home') }}" class=" qsa-link-header">Toutes vos analyses / Accueil</a></li>
+                        <li class="p-2 qsa-link"><a href="{{ path('app_home') }}" class=" qsa-link-header">Toutes vos analyses / Accueil </a></li>
 {#                        <li class="p-2 qsa-link"><a href="{{ path('app_order') }}" class=" qsa-link-header">Envoyer de nouvelles analyse</a></li>#}
                         <li class="p-2 qsa-link"><a href="{{ path('app_account') }}" class=" qsa-link-header">Mon compte</a></li>
                         <li class="p-2 qsa-link"><a href="{{ path('app_logout') }}" class=" qsa-link-header">Se déconnecter</a></li>
@@ -25,5 +51,63 @@
 {% endblock %}
 
 {% block body %}
-{{ form(form) }}
+    <div class="col-11 col-md-8 col-lg-5 mx-auto form-container">
+        {{ form_start(form) }}
+            {{ form_label(form.productName) }}
+        <div class="errors">
+            {{ form_errors(form.productName) }}
+        </div>
+            {{ form_widget(form.productName) }}
+
+        {{ form_label(form.numberLot) }}
+        <div class="errors">
+            {{ form_errors(form.numberLot) }}
+        </div>
+        {{ form_widget(form.numberLot) }}
+
+        {{ form_label(form.fournisseur) }}
+        <div class="errors">
+            {{ form_errors(form.fournisseur) }}
+        </div>
+        {{ form_widget(form.fournisseur) }}
+
+        {{ form_label(form.conditionnement) }}
+        <div class="errors">
+            {{ form_errors(form.conditionnement) }}
+        </div>
+        {{ form_widget(form.conditionnement) }}
+
+        {{ form_label(form.tempProduct) }}
+        <div class="errors">
+            {{ form_errors(form.tempProduct) }}
+        </div>
+        {{ form_widget(form.tempProduct) }}
+
+        {{ form_label(form.tempEnceinte) }}
+        <div class="errors">
+            {{ form_errors(form.tempEnceinte) }}
+        </div>
+        {{ form_widget(form.tempEnceinte) }}
+
+        {{ form_label(form.dateOfManufacturing) }}
+        <div class="errors">
+            {{ form_errors(form.dateOfManufacturing) }}
+        </div>
+        {{ form_widget(form.dateOfManufacturing) }}
+
+        {{ form_label(form.dlcDluo) }}
+        <div class="errors">
+            {{ form_errors(form.dlcDluo) }}
+        </div>
+        {{ form_widget(form.dlcDluo) }}
+
+        {{ form_label(form.datePrelevement) }}
+        <div class="errors">
+            {{ form_errors(form.datePrelevement) }}
+        </div>
+        {{ form_widget(form.datePrelevement) }}
+
+        {{ form_rest(form) }}
+        {{ form_end(form) }}
+    </div>
 {% endblock %}
