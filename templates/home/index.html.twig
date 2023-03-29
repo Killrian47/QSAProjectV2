@@ -6,9 +6,7 @@
     <div class="blocks-container">
         {% for role in app.user.roles %}
             {% if role == 'ROLE_ADMIN' %}
-                {% for order in adminView %}
-                    {{ dump(order) }}
-                {% endfor %}
+                {% include 'home/adminView.html.twig' %}
             {% endif %}
         {% endfor %}
 
