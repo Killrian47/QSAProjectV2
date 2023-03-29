@@ -1,0 +1,18 @@
+{% for order in adminView %}
+    {% set countEchantillonsForAdmin = 0 %}
+
+    {% for echantillons in order.echantillons.toArray %}
+        {% set countEchantillonsForAdmin = countEchantillonsForAdmin + 1 %}
+    {% endfor %}
+    {% if countEchantillonsForAdmin == 0 %}
+
+    {% else %}
+        <div class="block-container mb-3 mt-2">
+            <p>Numéro du bon de commande : <strong>{{ order.id }}</strong></p>
+
+            <p>Il y a {{ countEchantillonsForAdmin }} échantillons</p>
+            <a href="{{ path('app_details_order', { id : order.id}) }}">Voir plus de détails</a>
+        </div>
+
+    {% endif %}
+{% endfor %}
