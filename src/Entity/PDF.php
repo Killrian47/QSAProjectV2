@@ -16,6 +16,12 @@ class PDF
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $file = null;
 
+    #[ORM\ManyToOne(inversedBy: 'pdfs')]
+    private ?Entreprise $entreprise = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $slug = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -29,6 +35,30 @@ class PDF
     public function setFile(?string $file): self
     {
         $this->file = $file;
+
+        return $this;
+    }
+
+    public function getEntreprise(): ?Entreprise
+    {
+        return $this->entreprise;
+    }
+
+    public function setEntreprise(?Entreprise $entreprise): self
+    {
+        $this->entreprise = $entreprise;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(?string $slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }

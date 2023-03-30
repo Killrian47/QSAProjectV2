@@ -28,6 +28,7 @@ class TestController extends AbstractController
 
                 $originaleFileName = pathinfo($fileName->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFileName = $slugger->slug($originaleFileName);
+                $pdf->setSlug($safeFileName . '.' . $fileName->guessExtension());
                 $newFileName = $safeFileName . '_' . uniqid() . '.' . $fileName->guessExtension();
 
                 try {

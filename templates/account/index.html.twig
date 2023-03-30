@@ -15,6 +15,12 @@
                     <a href="{{ path('app_forgot_password_request') }}" class="mb-3">Réinitialiser mon mot de passe</a>
                 </div>
             </div>
+            <div>
+                <p>Vos pdf a disposition :</p>
+                {% for file in app.user.pdfs %}
+                    <a href="{{ path('app_pdf', { slug : file.slug}) }}" target="_blank" >{{ file.slug }}</a>
+                {% endfor %}
+            </div>
         </div>
     </div>
 {% endblock %}
