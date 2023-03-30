@@ -1,18 +1,29 @@
-{% for order in adminView %}
-    {% set countEchantillonsForAdmin = 0 %}
-
-    {% for echantillons in order.echantillons.toArray %}
-        {% set countEchantillonsForAdmin = countEchantillonsForAdmin + 1 %}
-    {% endfor %}
-    {% if countEchantillonsForAdmin == 0 %}
-
-    {% else %}
-        <div class="block-container mb-3 mt-2">
-            <p>Numéro du bon de commande : <strong>{{ order.id }}</strong></p>
-
-            <p>Il y a {{ countEchantillonsForAdmin }} échantillons</p>
-            <a href="{{ path('app_details_order', { id : order.id}) }}">Voir plus de détails</a>
+{% for role in app.user.roles %}
+    {% if role == 'ROLE_ADMIN' %}
+        <div class="col-12">
+            <h2 class="mt-2">Bons de commandes pas exportés </h2>
+            <hr class="sep">
         </div>
+        {% for order in adminView %}
+            {% set countEchantillonsForAdmin = 0 %}
 
+            {% for echantillons in order.echantillons.toArray %}
+                {% set countEchantillonsForAdmin = countEchantillonsForAdmin + 1 %}
+            {% endfor %}
+            {% if countEchantillonsForAdmin == 0 %}
+
+            {% else %}
+                {% if order.isExported != 1 %}
+                    <div class="block-container mb-3 mt-2">
+                        <p>Bon de commande créé par l'entreprise : <strong>{{ order.entreprise.name }}</strong></p>
+                        <p>Numéro du bon de commande : <strong>{{ order.id }}</strong></p>
+
+                        <p>Il y a {{ countEchantillonsForAdmin }} échantillons</p>
+                        <a href="{{ path('app_details_order', { id : order.id}) }}">Voir plus de détails</a>
+                    </div>
+                {% endif %}
+
+            {% endif %}
+        {% endfor %}
     {% endif %}
 {% endfor %}
