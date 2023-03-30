@@ -43,10 +43,14 @@ class Entreprise implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?bool $firstConnection = null;
 
+    #[ORM\OneToMany(mappedBy: 'entreprise', targetEntity: PDF::class)]
+    private Collection $pdfs;
+
     public function __construct()
     {
         $this->orders = new ArrayCollection();
         $this->echantillons = new ArrayCollection();
+        $this->pdfs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -204,6 +208,36 @@ class Entreprise implements UserInterface, PasswordAuthenticatedUserInterface
     public function setFirstConnection(bool $firstConnection): self
     {
         $this->firstConnection = $firstConnection;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PDF>
+     */
+    public function getPdfs(): Collection
+    {
+        return $this->pdfs;
+    }
+
+    public function addPdf(PDF $pdf): self
+    {
+        if (!$this->pdfs->contains($pdf)) {
+            $this->pdfs->add($pdf);
+            $pdf->setEntreprise($this);
+        }
+
+        return $this;
+    }
+
+    public function removePdf(PDF $pdf): self
+    {
+        if ($this->pdfs->removeElement($pdf)) {
+            // set the owning side to null (unless already changed)
+            if ($pdf->getEntreprise() === $this) {
+                $pdf->setEntreprise(null);
+            }
+        }
 
         return $this;
     }
