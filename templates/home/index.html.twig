@@ -4,12 +4,8 @@
 
 {% block body %}
     <div class="blocks-container">
-        {% for role in app.user.roles %}
-            {% if role == 'ROLE_ADMIN' %}
-                {% include 'home/adminView.html.twig' %}
-            {% endif %}
-        {% endfor %}
 
+        {% include 'home/adminView.html.twig' %}
 
         {% for order in orders %}
             {% set countEchantillons = 0 %}

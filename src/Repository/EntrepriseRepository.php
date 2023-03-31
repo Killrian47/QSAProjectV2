@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Entreprise;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -56,6 +57,20 @@ class EntrepriseRepository extends ServiceEntityRepository implements PasswordUp
         $this->save($user, true);
     }
 
+    public function startedByA(EntityManagerInterface $manager): array
+    {
+        $entreprises = [];
+        $allEntreprise = $manager->getRepository(Entreprise::class)->findAll();
+        foreach ($allEntreprise as $value) {
+            for ($i = 0; $i < 1; $i++) {
+                if ($value->getName()[$i] === 'a' || $value->getName()[$i] === 'A') {
+                    $entreprises[] = $value;
+                }
+            }
+        }
+
+        return $entreprises;
+    }
 //    /**
 //     * @return Entreprise[] Returns an array of Entreprise objects
 //     */

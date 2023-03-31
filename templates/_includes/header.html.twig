@@ -5,6 +5,8 @@
                 <div class="d-flex justify-content-center">
                     <img src="{{ asset('assets/images/LOGO-QSA-CONSEIL.png') }}" class="qsa-logo" alt="Logo QSA">
                 </div>
+                {% if app.user %}
+
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -19,7 +21,6 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ path('app_account') }}">Mon compte</a>
                         </li>
-                        {% if app.user %}
                         {% for role in app.user.roles %}
                             {% if role == 'ROLE_ADMIN' %}
                                 <li class="nav-item">
@@ -27,12 +28,13 @@
                                 </li>
                             {% endif %}
                         {% endfor %}
-                        {% endif %}
                         <li class="nav-item">
                             <a class="nav-link" href="{{ path('app_logout') }}">Se déconnecter</a>
                         </li>
                     </ul>
                 </div>
+                {% endif %}
+
             </div>
         </nav>
         <div class="d-none d-md-flex justify-content-center">
