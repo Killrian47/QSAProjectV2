@@ -24,7 +24,7 @@
                         {% for role in app.user.roles %}
                             {% if role == 'ROLE_ADMIN' %}
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ path('app_account') }}">Ajouter rapport d'audit</a>
+                                    <a class="nav-link" href="{{ path('app_add_pdf') }}">Ajouter rapport d'audit</a>
                                 </li>
                             {% endif %}
                         {% endfor %}
@@ -48,7 +48,7 @@
                     <li class="p-2 qsa-link"><a href="{{ path('app_account') }}" class=" qsa-link-header">Mon compte</a></li>
                     {% for role in app.user.roles %}
                         {% if role == 'ROLE_ADMIN' %}
-                            <li class="p-2 qsa-link"><a href="{{ path('app_account') }}" class=" qsa-link-header">Ajouter PDF audit</a></li>
+                            <li class="p-2 qsa-link"><a href="{{ path('app_add_pdf') }}" class=" qsa-link-header">Ajouter PDF audit</a></li>
                         {% endif %}
                     {% endfor %}
                     <li class="p-2 qsa-link"><a href="{{ path('app_logout') }}" class=" qsa-link-header">Se déconnecter</a></li>
