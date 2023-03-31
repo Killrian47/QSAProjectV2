@@ -3,14 +3,71 @@
 namespace App\Controller;
 
 use App\Entity\PDF;
+use App\Form\PDFType;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class PdfController extends AbstractController
 {
+    #[Route('/ajouter-un-pdf', name: 'app_add_pdf')]
+    public function addPDF(Request $request, SluggerInterface $slugger, EntityManagerInterface $manager): Response
+    {
+        $form = $this->createForm(PDFType::class);
+        $form->handleRequest($request);
+
+        date_default_timezone_set('Europe/Paris');
+        $date1 = new \DateTimeImmutable();
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $pdf = new PDF();
+            $fileName = $form->get('file')->getData();
+
+            if ($fileName) {
+
+                $originaleFileName = pathinfo($fileName->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFileName = $slugger->slug($originaleFileName);
+                $pdf->setSlug($safeFileName . '.' . $fileName->guessExtension());
+                $newFileName = $safeFileName . '_' . uniqid() . '.' . $fileName->guessExtension();
+
+                try {
+                    $fileName->move(
+                        $this->getParameter('pdf_dir'),
+                        $newFileName
+                    );
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
+
+                $pdf->setFile($newFileName);
+
+
+            }
+            $pdf->setEntreprise($form->get('entreprise')->getData());
+
+            $pdf->setCreatedAt($date1);
+
+            $manager->persist($pdf);
+            $manager->flush();
+
+            $this->addFlash('success', 'Le pdf vient d\'être envoyé à l\'entreprise');
+
+            return $this->redirectToRoute('app_admin');
+        }
+
+
+        return $this->render('pdf/add_pdf.html.twig', [
+            'controller_name' => 'TestController',
+            'form' => $form->createView()
+        ]);
+    }
+
     #[Route('/pdf/{slug}', name: 'app_pdf')]
     public function afficherPdf(string $slug, PDF $PDF): Response
     {
