@@ -45,23 +45,23 @@ class HomeController extends AbstractController
         ]);
     }
 
-    #[Route('/admin', name: 'app_admin')]
-    #[IsGranted('ROLE_ADMIN')]
-    public function adminSide(EntrepriseRepository $entrepriseRepository, EntityManagerInterface $manager): Response
-    {
-        $allEntrepriseWithoutAdmin = [];
-        $entreprises = $entrepriseRepository->startedByA($manager);
-        dd($entreprises);
-
-
-        foreach ($entreprises as $entreprise) {
-            if ($this->getUser() !== $entreprise) {
-                $allEntrepriseWithoutAdmin[] = $entreprise;
-            }
-        }
-
-        return $this->render('home/all_entreprise.html.twig', [
-            'entreprises' => $allEntrepriseWithoutAdmin
-        ]);
-    }
+//    #[Route('/admin1', name: 'app_admin')]
+//    #[IsGranted('ROLE_ADMIN')]
+//    public function adminSide(EntrepriseRepository $entrepriseRepository, EntityManagerInterface $manager): Response
+//    {
+//        $allEntrepriseWithoutAdmin = [];
+//        $entreprises = $entrepriseRepository->startedByA($manager);
+//        dd($entreprises);
+//
+//
+//        foreach ($entreprises as $entreprise) {
+//            if ($this->getUser() !== $entreprise) {
+//                $allEntrepriseWithoutAdmin[] = $entreprise;
+//            }
+//        }
+//
+//        return $this->render('home/all_entreprise.html.twig', [
+//            'entreprises' => $allEntrepriseWithoutAdmin
+//        ]);
+    //}
 }

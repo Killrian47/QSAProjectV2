@@ -56,21 +56,6 @@ class EntrepriseRepository extends ServiceEntityRepository implements PasswordUp
 
         $this->save($user, true);
     }
-
-    public function startedByA(EntityManagerInterface $manager): array
-    {
-        $entreprises = [];
-        $allEntreprise = $manager->getRepository(Entreprise::class)->findAll();
-        foreach ($allEntreprise as $value) {
-            for ($i = 0; $i < 1; $i++) {
-                if ($value->getName()[$i] === 'a' || $value->getName()[$i] === 'A') {
-                    $entreprises[] = $value;
-                }
-            }
-        }
-
-        return $entreprises;
-    }
 //    /**
 //     * @return Entreprise[] Returns an array of Entreprise objects
 //     */
