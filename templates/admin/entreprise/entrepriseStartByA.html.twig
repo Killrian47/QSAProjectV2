@@ -1,0 +1,23 @@
+{% if entreprisesStartByA is defined %}
+    {% if entreprisesStartByA is not null %}
+        <div>
+            <h2>A</h2>
+            <hr class="sep w-50">
+            <div class="list-entreprise">
+                {% for entreprise in entreprisesStartByA %}
+                    <div class="entreprise-container">
+                        {{ entreprise.name }}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% else %}
+        <div>
+            <h2>A</h2>
+            <hr class="sep w-50">
+            <div class="d-flex justify-content-center align-items-center">
+                <p>Pas d'entreprise commencant par A</p>
+            </div>
+        </div>
+    {% endif %}
+{% endif %}

@@ -1,0 +1,22 @@
+{% if entreprisesStartByD is defined %}
+    {% if entreprisesStartByD is not empty %}
+        <div>
+            <h2>D</h2>
+            <hr class="sep w-50">
+            <div class="list-entreprise">
+                {% for entreprise in entreprisesStartByD %}
+                    {% include 'admin/entreprise/entreprise.html.twig' %}
+
+                {% endfor %}
+            </div>
+        </div>
+    {% else %}
+        <div>
+            <h2>D</h2>
+            <hr class="sep w-50">
+            <div class="d-flex justify-content-center align-items-center">
+                <p>Pas d'entreprise commencant par D</p>
+            </div>
+        </div>
+    {% endif %}
+{% endif %}
