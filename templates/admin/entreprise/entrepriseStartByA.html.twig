@@ -5,9 +5,7 @@
             <hr class="sep w-50">
             <div class="list-entreprise">
                 {% for entreprise in entreprisesStartByA %}
-                    <div class="entreprise-container">
-                        {{ entreprise.name }}
-                    </div>
+                    {% include 'admin/entreprise/entreprise.html.twig' %}
                 {% endfor %}
             </div>
         </div>

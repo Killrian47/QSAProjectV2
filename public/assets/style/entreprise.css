@@ -1,0 +1,22 @@
+.list-entreprise {
+    width: 95%;
+    margin: auto;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.entreprise-container {
+    background: green;
+    padding: 10px;
+    border-radius: 15px;
+}
+
+.order-of-entreprise {
+    background: white;
+    padding: 10px;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+}

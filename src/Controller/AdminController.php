@@ -126,6 +126,11 @@ class AdminController extends AbstractController
                     }
                 }
             }
+            return $this->render('admin/all_entreprise.html.twig', [
+                'entreprisesStartByK' => $entreprisesStartByK,
+                'entreprisesStartByL' => $entreprisesStartByL,
+                'entreprisesStartByM' => $entreprisesStartByM,
+            ]);
         } elseif ($letter === 'NOPQ' || $letter === 'nopq') {
             foreach ($entreprises as $value) {
                 for ($i = 0; $i < 1; $i++) {
@@ -140,6 +145,12 @@ class AdminController extends AbstractController
                     }
                 }
             }
+            return $this->render('admin/all_entreprise.html.twig', [
+                'entreprisesStartByN' => $entreprisesStartByN,
+                'entreprisesStartByO' => $entreprisesStartByO,
+                'entreprisesStartByP' => $entreprisesStartByP,
+                'entreprisesStartByQ' => $entreprisesStartByQ,
+            ]);
         } elseif ($letter === 'RSTU' || $letter === 'rstu') {
             foreach ($entreprises as $value) {
                 for ($i = 0; $i < 1; $i++) {
@@ -154,6 +165,12 @@ class AdminController extends AbstractController
                     }
                 }
             }
+            return $this->render('admin/all_entreprise.html.twig', [
+                'entreprisesStartByR' => $entreprisesStartByR,
+                'entreprisesStartByS' => $entreprisesStartByS,
+                'entreprisesStartByT' => $entreprisesStartByT,
+                'entreprisesStartByU' => $entreprisesStartByU,
+            ]);
         } elseif ($letter === 'VWXYZ' || $letter === 'vwxyz') {
             foreach ($entreprises as $value) {
                 for ($i = 0; $i < 1; $i++) {
@@ -170,28 +187,15 @@ class AdminController extends AbstractController
                     }
                 }
             }
+            return $this->render('admin/all_entreprise.html.twig', [
+                'entreprisesStartByV' => $entreprisesStartByV,
+                'entreprisesStartByW' => $entreprisesStartByW,
+                'entreprisesStartByX' => $entreprisesStartByX,
+                'entreprisesStartByY' => $entreprisesStartByY,
+                'entreprisesStartByZ' => $entreprisesStartByZ,
+            ]);
         }
 
-        return $this->render('admin/all_entreprise.html.twig', [
-            'controller_name' => 'AdminController',
-
-
-            'entreprisesStartByK' => $entreprisesStartByK,
-            'entreprisesStartByL' => $entreprisesStartByL,
-            'entreprisesStartByM' => $entreprisesStartByM,
-            'entreprisesStartByN' => $entreprisesStartByN,
-            'entreprisesStartByO' => $entreprisesStartByO,
-            'entreprisesStartByP' => $entreprisesStartByP,
-            'entreprisesStartByQ' => $entreprisesStartByQ,
-            'entreprisesStartByR' => $entreprisesStartByR,
-            'entreprisesStartByS' => $entreprisesStartByS,
-            'entreprisesStartByT' => $entreprisesStartByT,
-            'entreprisesStartByU' => $entreprisesStartByU,
-            'entreprisesStartByV' => $entreprisesStartByV,
-            'entreprisesStartByW' => $entreprisesStartByW,
-            'entreprisesStartByX' => $entreprisesStartByX,
-            'entreprisesStartByY' => $entreprisesStartByY,
-            'entreprisesStartByZ' => $entreprisesStartByZ,
-        ]);
+        return $this->render('admin/all_entreprise.html.twig');
     }
 }
