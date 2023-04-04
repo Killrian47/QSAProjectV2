@@ -1,7 +1,7 @@
 {% for role in app.user.roles %}
     {% if role == 'ROLE_ADMIN' %}
         <div class="col-12">
-            <h2 class="mt-2">Bons de commandes pas exportés </h2>
+            <h2 class="mt-2">Bons de commandes non exportés </h2>
             <hr class="sep">
         </div>
         {% for order in adminView %}
@@ -15,7 +15,8 @@
             {% else %}
                 {% if order.isExported != 1 %}
                     <div class="block-container mb-3 mt-2">
-                        <p>Bon de commande créé par l'entreprise : <strong>{{ order.entreprise.name }}</strong></p>
+                        <p>Bon de commande créé par l'entreprise <strong>{{ order.entreprise.name }}</strong> le
+                            <strong>{{ order.createdAt | date('d-m-Y') }}</strong></p>
                         <p>Numéro du bon de commande : <strong>{{ order.id }}</strong></p>
 
                         <p>Il y a {{ countEchantillonsForAdmin }} échantillons</p>

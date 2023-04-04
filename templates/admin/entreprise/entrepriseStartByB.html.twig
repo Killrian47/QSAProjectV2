@@ -5,7 +5,65 @@
             <hr class="sep w-50">
             <div class="list-entreprise">
                 {% for entreprise in entreprisesStartByB %}
-                    {% include 'admin/entreprise/entreprise.html.twig' %}
+                    <div class="entreprise-container">
+                        <h4>Nom de l'entreprise : {{ entreprise.name }}</h4>
+
+                        <div class="order-of-entreprise">
+                            <h5>Bon de commandes de l'entreprise :</h5>
+                            {% set counter = 0 %}
+
+                            {% if entreprise.orders is not empty %}
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">Numéro bon de commande</th>
+                                        <th scope="col">Nombre d'échantillons</th>
+                                        <th scope="col">A été exporté</th>
+                                        <th scope="col">Crée le :</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for orders in orderForEntreprisesB %}
+                                        {% for order in orders %}
+                                            {% if order.entreprise.id == entreprise.id %}
+
+                                                {% set countEchantillon = 0 %}
+
+                                                {% for echantillon in order.echantillons %}
+                                                    {% set countEchantillon = countEchantillon + 1 %}
+                                                {% endfor %}
+
+
+                                                {% if countEchantillon != 0 %}
+                                                    {% if counter < 5 %}
+                                                        <tr>
+                                                            <td>{{ order.id }}</td>
+                                                            <td>{{ countEchantillon }}</td>
+                                                            {% if order.isExported == 0 %}
+                                                                <td>Non</td>
+                                                            {% else %}
+                                                                <td>Oui</td>
+                                                            {% endif %}
+                                                            <td>{{ order.createdAt | date("d-m-Y") }}</td>
+                                                            <td>
+                                                                <a href="{{ path('app_details_order', { id : order.id}) }}">Voir
+                                                                    plus</a></td>
+                                                        </tr>
+                                                    {% endif %}
+                                                    {% set counter = counter + 1 %}
+                                                {% endif %}
+
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            {% else %}
+                                <p class="mb-0 d-flex justify-content-center align-items-center fw-bold">Pas de bons de
+                                    commandes pour cette entreprise</p>
+                            {% endif %}
+                        </div>
+                    </div>
                 {% endfor %}
             </div>
         </div>
@@ -14,7 +72,7 @@
             <h2>B</h2>
             <hr class="sep w-50">
             <div class="d-flex justify-content-center align-items-center">
-                <p>Pas d'entreprise commencant par B</p>
+                <p>Pas d'entreprise commençant par B</p>
             </div>
         </div>
     {% endif %}

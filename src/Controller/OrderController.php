@@ -46,10 +46,12 @@ class OrderController extends AbstractController
             return $this->redirectToRoute('app_home');
         }
 
+        date_default_timezone_set('Europe/Paris');
         $user = $this->getUser();
         $order = new Order();
         $order->setEntreprise($user);
         $order->setIsExported(false);
+        $order->setCreatedAt(new \DateTime());
 
         $manager->persist($order);
         $manager->flush();
