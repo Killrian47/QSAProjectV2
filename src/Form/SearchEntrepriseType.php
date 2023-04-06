@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\SearchType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\GreaterThan;
 
 class SearchEntrepriseType extends AbstractType
 {
@@ -33,7 +34,7 @@ class SearchEntrepriseType extends AbstractType
                 'attr' => [
                     'class' => 'form-control',
                 ],
-                'label' => 'deuxième date'
+                'label' => 'deuxième date',
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Rechercher'

@@ -44,6 +44,7 @@ class OrderRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('o')
             ->where('o.createdAt > :date1')
             ->andWhere('o.createdAt < :date2')
+            ->orderBy('o.createdAt', 'ASC')
             ->setParameters([
                 'date1' => $date1,
                 'date2' => $date2

@@ -56,12 +56,23 @@
 
                                     </tbody>
                                 </table>
-                                {% else %}
+                            {% else %}
                                 <strong class="text-center">Pas de bon de commande pour cette entreprise</strong>
                             {% endif %}
                         </div>
                     </div>
                 {% endfor %}
+            </div>
+        </div>
+    {% else %}
+        <div>
+            <h2>Résultat pour votre recherche "{% if search is defined %}
+                    {{ search }}
+                {% endif %}"
+            </h2>
+            <hr class="sep w-50">
+            <div class="d-flex justify-content-center align-items-center">
+                <h4>Il n'y a pas d'entreprise correspondant à votre recherche</h4>
             </div>
         </div>
     {% endif %}

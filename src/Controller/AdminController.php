@@ -33,6 +33,11 @@ class AdminController extends AbstractController
                 $search = $form->get('search')->getData();
                 $entreprises = $entrepriseRepository->findByEntrepriseName($search);
 
+                return $this->render('admin/all_entreprise.html.twig', [
+                    'form' => $form->createView(),
+                    'entreprises' => $entreprises,
+                    'search' => $search,
+                ]);
             }
 
             if ($form->get('date1')->getData() && $form->get('date2')->getData()) {
@@ -45,17 +50,14 @@ class AdminController extends AbstractController
                         $orders[] = $order;
                     }
                 }
+                return $this->render('admin/all_entreprise.html.twig', [
+                    'form' => $form->createView(),
+                    'orders' => $orders,
+                    'date1' => $date1,
+                    'date2' => $date2,
+                ]);
             }
 
-
-            return $this->render('admin/all_entreprise.html.twig', [
-                'form' => $form->createView(),
-                'entreprises' => $entreprises,
-                'search' => $search,
-//                'orders' => $orders,
-//                'date1' => $date1,
-//                'date2' => $date2,
-            ]);
         }
 
         $totalEntreprise = $entrepriseRepository->createQueryBuilder('e')
