@@ -39,6 +39,19 @@ class OrderRepository extends ServiceEntityRepository
         }
     }
 
+    public function findByDate(\DateTime $date1, \DateTime $date2, )
+    {
+        return $this->createQueryBuilder('o')
+            ->where('o.createdAt > :date1')
+            ->andWhere('o.createdAt < :date2')
+            ->setParameters([
+                'date1' => $date1,
+                'date2' => $date2
+            ])
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return Order[] Returns an array of Order objects
 //     */
