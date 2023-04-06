@@ -46,10 +46,12 @@ class OrderController extends AbstractController
             return $this->redirectToRoute('app_home');
         }
 
+        date_default_timezone_set('Europe/Paris');
         $user = $this->getUser();
         $order = new Order();
         $order->setEntreprise($user);
         $order->setIsExported(false);
+        $order->setCreatedAt(new \DateTime());
 
         $manager->persist($order);
         $manager->flush();
@@ -76,7 +78,7 @@ class OrderController extends AbstractController
             $echantillon->setFournisseur($form->get('fournisseur')->getData());
             $echantillon->setTempProduct($form->get('tempProduct')->getData());
             $echantillon->setDatePrelevement($form->get('datePrelevement')->getData());
-            $echantillon->setDlcDluo($form->get('DlcDluo')->getData());
+            $echantillon->setDlcDluo($form->get('dlcDluo')->getData());
 
             $manager->persist($echantillon);
             $manager->flush();

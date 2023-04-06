@@ -5,25 +5,15 @@ namespace App\Controller;
 use App\Form\SearchEntrepriseType;
 use App\Repository\EntrepriseRepository;
 use App\Repository\OrderRepository;
-use Doctrine\ORM\NonUniqueResultException;
-use Doctrine\ORM\NoResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class AdminController extends AbstractController
+class SearchEntrepriseController extends AbstractController
 {
-    /**
-     * @throws NonUniqueResultException
-     * @throws NoResultException
-     */
-    #[Route('/admin', name: 'app_admin')]
-    public function index(
-        EntrepriseRepository $entrepriseRepository,
-        OrderRepository      $orderRepository,
-        Request              $request
-    ): Response
+    #[Route('/search/entreprise', name: 'app_search_entreprise')]
+    public function index(Request $request, EntrepriseRepository $entrepriseRepository, OrderRepository $orderRepository): Response
     {
         $form = $this->createForm(SearchEntrepriseType::class);
         $form->handleRequest($request);
@@ -58,14 +48,9 @@ class AdminController extends AbstractController
             ]);
         }
 
-        $totalEntreprise = $entrepriseRepository->createQueryBuilder('e')
-            ->select(['count(e.id)'])
-            ->getQuery()
-            ->getSingleScalarResult();
 
-        return $this->render('admin/index.html.twig', [
-            'controller_name' => 'AdminController',
-            'totalEntreprise' => $totalEntreprise,
+        return $this->render('search_entreprise/index.html.twig', [
+            'controller_name' => 'SearchEntrepriseController',
             'form' => $form->createView(),
         ]);
     }

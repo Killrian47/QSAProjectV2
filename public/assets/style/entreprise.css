@@ -1,0 +1,51 @@
+.list-entreprise {
+    width: 95%;
+    margin: auto;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.entreprise-container {
+    background: green;
+    padding: 10px;
+    border-radius: 15px;
+}
+
+.order-of-entreprise {
+    background: white;
+    padding: 10px;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.fake-div {
+    width: 250px;
+    height: 100px;
+}
+
+.alphabet {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.qsa-alpha {
+    border: 1px black solid;
+    padding: 5px;
+    border-radius: 3px;
+    text-decoration: none;
+    color: black;
+    transition: transform .5s;
+}
+
+.qsa-alpha:hover {
+    transform: scale(125%);
+    background: black;
+    color: white;
+}
