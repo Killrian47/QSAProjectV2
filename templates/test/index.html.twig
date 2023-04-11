@@ -3,13 +3,37 @@
 {% block title %}Hello TestController!{% endblock %}
 
 {% block body %}
-    {% for entreprise in pagination %}
-        {{ entreprise.name }}
+    {% for ec in pagination %}
+        {% if ec.productName == null %}
+            t'es null
+            {% else %}
+            {{ ec.productName }}
+        {% endif %}
     {% endfor %}
 
 
     <div class="pagination">
-        {{ knp_pagination_render(pagination) }}
+        <ul>
+            {% if pagination.currentPageNumber > 1 %}
+                <li><a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'page': pagination.currentPageNumber - 1})) }}">Précédent</a></li>
+            {% endif %}
+
+            {% for page in pagination.pageRange %}
+                {% if pagination.currentPageNumber == page %}
+                    <li class="active"><span>{{ page }}</span></li>
+                {% else %}
+                    <li><a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'page': page})) }}">{{ page }}</a></li>
+                {% endif %}
+            {% endfor %}
+
+            {% set nbTotalPage = pagination.totalItemCount / pagination.itemNumberPerPage %}
+            {{ dump(nbTotalPage) }}
+
+            {% if pagination.currentPageNumber < nbTotalPage %}
+                <li><a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'page': pagination.currentPageNumber + 1})) }}">Suivant</a></li>
+            {% endif %}
+        </ul>
     </div>
+
 
 {% endblock %}

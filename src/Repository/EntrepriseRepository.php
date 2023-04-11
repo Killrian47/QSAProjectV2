@@ -59,13 +59,13 @@ class EntrepriseRepository extends ServiceEntityRepository implements PasswordUp
 
     public function findByEntrepriseName(string $name)
     {
-        dd( $this->createQueryBuilder('e')
+        return $this->createQueryBuilder('e')
             ->where('e.name LIKE :name')
             ->setParameter('name', '%' . $name . '%')
             ->orderBy('e.name', 'ASC')
             ->getQuery()
-//            ->getResult()
-        );
+            ->getResult()
+        ;
     }
 
     public function findByNamePlusTwoDate(string $name, \DateTime $date1, \DateTime $date2)
