@@ -67,13 +67,15 @@ class EntrepriseRepository extends ServiceEntityRepository implements PasswordUp
             ->getResult();
     }
 
-    public function findByDate(\DateTime $date1, \DateTime $date2, )
+    public function findByNamePlusTwoDate(string $name, \DateTime $date1, \DateTime $date2)
     {
         return $this->createQueryBuilder('e')
             ->join('e.orders', 'o')
-            ->where('o.createdAt > :date1')
-            ->andWhere('o.createdAt < :date2')
+            ->where('e.name LIKE :name')
+            ->having('o.createdAt > :date1')
+            ->andHaving('o.createdAt < :date2')
             ->setParameters([
+                'name' => '%' . $name . '%',
                 'date1' => $date1,
                 'date2' => $date2
             ])

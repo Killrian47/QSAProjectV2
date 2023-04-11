@@ -23,6 +23,16 @@ class EntrepriseStartByNOPQController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
+
+            if ($form->get('search')->getData() && $form->get('date1')->getData() ||
+                $form->get('search')->getData() && $form->get('date2')->getData() ||
+                $form->get('search')->getData() && $form->get('date1')->getData() && $form->get('date2')->getData()
+            ) {
+                $this->addFlash('danger', 'Il faut rechercher soit par nom de l\'entreprise soit entre la 1ère et la 2ème date');
+
+                return $this->redirectToRoute('app_search_entreprise');
+            }
+
             if ($form->get('search')->getData()) {
                 $search = $form->get('search')->getData();
                 $entreprises = $entrepriseRepository->findByEntrepriseName($search);
