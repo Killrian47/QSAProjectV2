@@ -64,7 +64,8 @@ class EntrepriseRepository extends ServiceEntityRepository implements PasswordUp
             ->setParameter('name', '%' . $name . '%')
             ->orderBy('e.name', 'ASC')
             ->getQuery()
-            ->getResult();
+            ->getResult()
+        ;
     }
 
     public function findByNamePlusTwoDate(string $name, \DateTime $date1, \DateTime $date2)

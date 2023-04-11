@@ -1,9 +1,81 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ entreprise.name }} détail | {{ parent() }}{% endblock %}
+{% block title %}Détail de l'entreprise | {{ parent() }}{% endblock %}
 
 {% block body %}
-<div class="col-lg-5 mx-auto">
 
-</div>
+
+    <div class="col-lg-6 mx-auto mt-2">
+        <h3 class="text-center">Entreprise : {{ entreprise.name }}</h3>
+
+        <div class="bon-de-commande">
+            {% if entreprise.orders is not empty %}
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Numéro bon de commande</th>
+                        <th scope="col">Nombre d'échantillons</th>
+                        <th scope="col">A été exporté</th>
+                        <th scope="col">Crée le :</th>
+                    </tr>
+
+                    </thead>
+                    <tbody>
+                    {% for order in pagination %}
+                        {% set countEchantillon = 0 %}
+                        {% for echantillon in order.echantillons %}
+                            {% set countEchantillon = countEchantillon + 1 %}
+                        {% endfor %}
+                        <tr>
+                            <td>{{ order.id }}</td>
+                            <td>{{ countEchantillon }}</td>
+                            {% if order.isExported == 0 %}
+                                <td>Non</td>
+                            {% else %}
+                                <td>Oui</td>
+                            {% endif %}
+                            <td>{{ order.createdAt | date("d-m-Y") }}</td>
+                            <td>
+                                <a href="{{ path('app_details_order', { id : order.id}) }}">Voir
+                                    plus</a></td>
+                        </tr>
+
+                    {% endfor %}
+                    </tbody>
+
+                </table>
+            {% endif %}
+        </div>
+        <div class="pagination">
+
+
+
+            {% for page in pagination.pageRange %}
+                {% if pagination.currentPageNumber == page %}
+                    <span>{{ page }}</span>
+                {% else %}
+
+                    <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'page': page})) }}">{{ page }}</a>
+
+                {% endif %}
+            {% endfor %}
+
+            {% set nbTotalPage = pagination.totalItemCount / pagination.itemNumberPerPage %}
+
+            <div class="d-flex">
+                {% if pagination.currentPageNumber > 1 %}
+                    <a class="me-3" href="{{ path('app_entreprise', {'id': entreprise.id, 'page': pagination.currentPageNumber - 1}) }}">Précédent</a>
+                {% endif %}
+
+                {% if pagination.currentPageNumber < nbTotalPage %}
+                    <a href="{{ path('app_entreprise', {'id': entreprise.id, 'page': pagination.currentPageNumber + 1}) }}">Suivant</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+
+
+
 {% endblock %}
+
