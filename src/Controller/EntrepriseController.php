@@ -23,7 +23,7 @@ class EntrepriseController extends AbstractController
     {
 
         $query = $manager->createQuery('SELECT o FROM App\Entity\Order o WHERE o.entreprise = ' . $id);
-        $pagination = $paginator->paginate($query, $request->query->getInt('page', 1), 10);
+        $pagination = $paginator->paginate($query, $request->query->getInt('page', 1), 5);
 
 
         return $this->render('entreprise/index.html.twig', [
