@@ -11,13 +11,19 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 class PdfController extends AbstractController
 {
+    /**
+     * @throws TransportExceptionInterface
+     */
     #[Route('/ajouter-un-pdf', name: 'app_add_pdf')]
-    public function addPDF(Request $request, SluggerInterface $slugger, EntityManagerInterface $manager): Response
+    public function addPDF(Request $request, SluggerInterface $slugger, EntityManagerInterface $manager, MailerInterface $mailer): Response
     {
         $form = $this->createForm(PDFType::class);
         $form->handleRequest($request);
@@ -50,8 +56,15 @@ class PdfController extends AbstractController
 
             }
             $pdf->setEntreprise($form->get('entreprise')->getData());
-
             $pdf->setCreatedAt($date1);
+
+            $mail = (new Email())
+                ->from($this->getUser()->getEmail())
+                ->to($form->get('entreprise')->getData()->getEmail())
+                ->subject('Un nouveau fichier est disponible dans votre espace client')
+                ->html("<h1>Nouveau PDF d'audit disponible sur votre compte </h1>");
+
+            $mailer->send($mail);
 
             $manager->persist($pdf);
             $manager->flush();
@@ -63,7 +76,6 @@ class PdfController extends AbstractController
 
 
         return $this->render('pdf/add_pdf.html.twig', [
-            'controller_name' => 'TestController',
             'form' => $form->createView()
         ]);
     }
