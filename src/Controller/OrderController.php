@@ -7,6 +7,7 @@ use App\Entity\Order;
 use App\Form\EchantillonType;
 use App\Repository\EchantillonRepository;
 use App\Repository\EntrepriseRepository;
+use App\Repository\OrderRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Exception\ORMException;
@@ -15,6 +16,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -36,14 +38,6 @@ class OrderController extends AbstractController
         if ($this->getUser()->isFirstConnection() === true) {
             $this->addFlash('warning', 'Vous devez changer votre mot de passe avant de pouvoir naviguer sur le site');
             return $this->redirectToRoute('app_edit_password');
-        }
-
-//        dd($this->getUser()->getRoles());
-        $roles = ["ROLE_ADMIN", "ROLE_USER"];
-
-        if ($this->getUser()->getRoles() === $roles) {
-            $this->addFlash('danger', 'En tant qu\'administrateur du site vous ne pouvez pas créer de bon de commande ');
-            return $this->redirectToRoute('app_home');
         }
 
         date_default_timezone_set('Europe/Paris');
@@ -90,5 +84,23 @@ class OrderController extends AbstractController
         return $this->render('order/index.html.twig', [
             'form' => $form->createView()
         ]);
+    }
+
+    #[Route('/supprimer-bon-de-commande-sans-échantillons', name: 'app_delete_all_orders_without_echantillons')]
+    #[IsGranted("ROLE_ADMIN")]
+    public function deleteOrder(EntityManagerInterface $manager, OrderRepository $orderRepository): RedirectResponse
+    {
+        $orders = $orderRepository->findAll();
+        $all = [];
+        foreach ($orders as $order) {
+            if (empty($order->getEchantillons()->toArray())) {
+                $manager->remove($order);
+            }
+        }
+        $manager->flush();
+
+
+        $this->addFlash('success', 'Tous les bons de commandes sans échantillons ont été supprimés !');
+        return $this->redirectToRoute('app_admin');
     }
 }

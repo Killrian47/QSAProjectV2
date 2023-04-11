@@ -47,7 +47,7 @@ class EntrepriseStartByNOPQController extends AbstractController
             if ($form->get('date1')->getData() && $form->get('date2')->getData()) {
                 $date1 = $form->get('date1')->getData();
                 $date2 = $form->get('date2')->getData();
-                $allOrders = $orderRepository->findByDate($date1, $date2);
+                $allOrders = $orderRepository->findByTwoDate($date1, $date2);
                 $orders = [];
                 if (isset($allOrders)) {
                     foreach ($allOrders as $order) {
