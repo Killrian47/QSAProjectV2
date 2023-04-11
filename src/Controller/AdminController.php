@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class AdminController extends AbstractController
 {
@@ -19,6 +20,7 @@ class AdminController extends AbstractController
      * @throws NoResultException
      */
     #[Route('/admin', name: 'app_admin')]
+    #[IsGranted("ROLE_ADMIN")]
     public function index(
         EntrepriseRepository $entrepriseRepository,
         OrderRepository      $orderRepository,

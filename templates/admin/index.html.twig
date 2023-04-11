@@ -3,19 +3,15 @@
 {% block title %}Liste des entreprises | {{ parent() }}{% endblock %}
 
 {% block body %}
-
-    {# Search bar #}
-    {% include '_includes/searchbarEntreprise.html.twig' %}
-    {# End search bar #}
-
-
     <div class="col-lg-9 mx-auto d-flex ">
         <div class="col-lg-3">
             {% include '_includes/sidebarAlphabet.html.twig' %}
             <div class="fake-div"></div>
         </div>
-        <div class="col-lg-9 d-flex justify-content-center align-items-center mt-5">
-            <h4>Vous avez {{ totalEntreprise - 1 }} entreprises enregistrer sur votre plateforme</h4>
+        <div class="col-lg-9 d-flex justify-content-center mt-2 flex-column">
+            {% include '_includes/searchbarEntreprise.html.twig' %}
+
+            <h4 class="text-center">Vous avez {{ totalEntreprise - 1 }} entreprises enregistrer sur votre plateforme</h4>
         </div>
     </div>
 
