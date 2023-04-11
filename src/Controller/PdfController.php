@@ -71,7 +71,7 @@ class PdfController extends AbstractController
 
             $this->addFlash('success', 'Le pdf vient d\'être envoyé à l\'entreprise');
 
-            return $this->redirectToRoute('app_admin');
+            return $this->redirectToRoute('app_home');
         }
 
 

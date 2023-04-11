@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello TestController!{% endblock %}
+
+{% block body %}
+    {% for entreprise in pagination %}
+        {{ entreprise.name }}
+    {% endfor %}
+
+
+    <div class="pagination">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+
+{% endblock %}

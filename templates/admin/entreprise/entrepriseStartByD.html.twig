@@ -6,7 +6,11 @@
             <div class="list-entreprise">
                 {% for entreprise in entreprisesStartByD %}
                     <div class="entreprise-container">
-                        <h4>Nom de l'entreprise : {{ entreprise.name }}</h4>
+                        <div class="d-flex justify-content-between">
+                            <h4>Nom de l'entreprise : {{ entreprise.name }}</h4>
+
+                            <a href="{{ path('app_entreprise', {'id': entreprise.id}) }}">Détail de l'entreprise</a>
+                        </div>
 
                         <div class="order-of-entreprise">
                             <h5>Bon de commandes de l'entreprise :</h5>

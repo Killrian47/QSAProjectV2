@@ -1,9 +1,51 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ entreprise.name }} détail | {{ parent() }}{% endblock %}
+{% block title %}Détail entreprise | {{ parent() }}{% endblock %}
 
 {% block body %}
-<div class="col-lg-5 mx-auto">
+    <div class="col-lg-6 mx-auto">
 
-</div>
+        <h3>{{ entreprise.name }}</h3>
+        <hr class="sep w-50">
+
+        <h5>Bon de commandes :</h5>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Numéro bon de commande</th>
+                <th scope="col">Nombre d'échantillons</th>
+                <th scope="col">A été exporté</th>
+                <th scope="col">Crée le :</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for order in entreprise.orders %}
+
+                {% set countEchantillon = 0 %}
+                {% for echantillon in order.echantillons %}
+                    {% set countEchantillon = countEchantillon + 1 %}
+                {% endfor %}
+
+                {% if countEchantillon != 0 %}
+
+                    <tr>
+                        <td>{{ order.id }}</td>
+                        <td>{{ countEchantillon }}</td>
+                        {% if order.isExported == 0 %}
+                            <td>Non</td>
+                        {% else %}
+                            <td>Oui</td>
+                        {% endif %}
+                        <td>{{ order.createdAt | date("d-m-Y") }}</td>
+                        <td>
+                            <a href="{{ path('app_details_order', { id : order.id}) }}">Voir
+                                plus</a></td>
+                    </tr>
+
+                {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}
