@@ -1,7 +1,9 @@
 {% if orders is defined %}
     {% if orders is not empty %}
         <div>
-            <h2>Bons de commandes créés entre <br> le {{ date1 | date('d-m-Y') }} et le {{ date2 | date('d-m-Y') }}</h2>
+            <h2>Bons de commandes créés entre <br> le {{ date1 | date('d-m-Y') }} et le {% if date2 is defined %}
+                    {{ date2 | date('d-m-Y') }}
+                {% endif %}</h2>
             <hr class="w-50 sep">
             <div class="list-entreprise">
                 {% for order in orders %}
@@ -49,7 +51,11 @@
         </div>
     {% else %}
         <div>
-            <h2>Bons de commandes crées entre <br>le {{ date1 | date('d-m-Y') }} et le {{ date2 | date('d-m-Y') }}</h2>
+            <h2>Bons de commandes crées {% if date2 is defined %}
+                    entre
+                {% endif %} <br>le {{ date1 | date('d-m-Y') }} et le {% if date2 is defined %}
+                    {{ date2 | date('d-m-Y') }}
+                {% endif %}</h2>
             <hr class="w-50 sep">
             <div>
                 <h4 class="text-center mt-2">Il n'y a pas de bons de commandes créés entre ces dates</h4>
