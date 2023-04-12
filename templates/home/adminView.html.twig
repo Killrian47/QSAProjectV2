@@ -3,6 +3,9 @@
         <div class="col-12">
             <h2 class="mt-2">Bons de commandes non exportés </h2>
             <hr class="sep">
+            <div class="d-flex justify-content-end">
+                {% include '_includes/boutonForDelete.html.twig' %}
+            </div>
         </div>
         {% for order in adminView %}
             {% set countEchantillonsForAdmin = 0 %}

@@ -12,7 +12,8 @@
 
     <div class="d-flex mt-1 flex-column">
         <div class="">
-            <p class="mb-0">Ou trouver un <strong>BON DE COMMANDE</strong> entre la <strong>{{ form_label(form.date1) }}</strong></p>
+            <p class="mb-0">Ou trouver un <strong>BON DE COMMANDE</strong> entre la
+                <strong>{{ form_label(form.date1) }}</strong></p>
             <div class="d-flex flex-column">
                 <div class="errors mt-1">
                     {{ form_errors(form.date1) }}
@@ -32,8 +33,9 @@
         </div>
     </div>
 
-    <div class="">
+    <div class="d-flex justify-content-between">
         {{ form_widget(form.submit, { attr : { class : 'btn qsa-btn mt-3 mb-4'}}) }}
+        {% include '_includes/boutonForDelete.html.twig' %}
     </div>
 
     {{ form_end(form) }}
