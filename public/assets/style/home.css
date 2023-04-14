@@ -17,7 +17,7 @@
     .blocks-container {
         width: 750px;
         flex-direction: initial;
-        justify-content: center;
+        justify-content: space-between;
         flex-wrap: wrap;
         gap: 20px;
     }
