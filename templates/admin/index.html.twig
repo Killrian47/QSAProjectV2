@@ -3,10 +3,10 @@
 {% block title %}Liste des entreprises | {{ parent() }}{% endblock %}
 
 {% block body %}
-    <div class="col-lg-9 mx-auto d-flex ">
-        <div class="col-lg-3">
+    <div class="col-11 d-flex flex-column col-lg-9 mx-auto flex-lg-row">
+        <div class="col-12 col-lg-3 mb-3">
             {% include '_includes/sidebarAlphabet.html.twig' %}
-            <div class="fake-div"></div>
+            <div class="d-none d-lg-block fake-div"></div>
         </div>
         <div class="col-lg-9 d-flex justify-content-center mt-2 flex-column">
             {% include '_includes/searchbarEntreprise.html.twig' %}

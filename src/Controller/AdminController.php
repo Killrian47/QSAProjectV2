@@ -102,9 +102,10 @@ class AdminController extends AbstractController
             ->getQuery()
             ->getSingleScalarResult();
 
-        return $this->render('admin/index.html.twig', ['controller_name' => 'AdminController',
+        return $this->render('admin/index.html.twig', [
             'totalEntreprise' => $totalEntreprise,
-            'form' => $form->createView(),]);
+            'form' => $form->createView(),
+            ]);
 
     }
 }

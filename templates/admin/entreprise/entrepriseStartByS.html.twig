@@ -1,70 +1,68 @@
 {% if entreprisesStartByS is defined %}
     {% if entreprisesStartByS is not empty %}
-        <div>
+        <div class="col-12">
             <h2>S</h2>
             <hr class="sep w-50">
             <div class="list-entreprise">
                 {% for entreprise in entreprisesStartByS %}
                     <div class="entreprise-container">
                         <div class="d-flex justify-content-between">
-                            <h4>Nom de l'entreprise : {{ entreprise.name }}</h4>
-                            <a class="text-dark" href="{{ path('app_entreprise', { id : entreprise.id }) }}">Plus de détail sur l'entreprise</a>
+                            <h4>{{ entreprise.name }}</h4>
+                            <a class="" href="{{ path('app_entreprise', { id : entreprise.id}) }}">Détail de
+                                l'entreprise</a>
                         </div>
+
                         <div class="order-of-entreprise">
                             <h5>Bon de commandes de l'entreprise :</h5>
                             {% set counter = 0 %}
 
                             {% if entreprise.orders is not empty %}
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">N<sup>o</sup></th>
+                                        <th scope="col" class="text-center">Nb échantillons</th>
+                                        <th scope="col" class="text-center">Exporté?</th>
+                                        <th scope="col" class="text-center">Crée le :</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for orders in orderForEntreprisesS %}
+                                        {% for order in orders %}
+                                            {% if order.entreprise.id == entreprise.id %}
 
-                                {% for orders in orderForEntreprisesS %}
-                                    {% for order in orders %}
-                                        {% if order.entreprise.id == entreprise.id %}
+                                                {% set countEchantillon = 0 %}
 
-                                            {% set countEchantillon = 0 %}
-
-                                            {% for echantillon in order.echantillons %}
-                                                {% set countEchantillon = countEchantillon + 1 %}
-                                            {% endfor %}
+                                                {% for echantillon in order.echantillons %}
+                                                    {% set countEchantillon = countEchantillon + 1 %}
+                                                {% endfor %}
 
 
-                                            {% if countEchantillon != 0 %}
-                                                {% if counter < 5 %}
-                                                    <table class="table">
-                                                        <thead>
-                                                        <tr>
-                                                            <th scope="col">Numéro bon de commande</th>
-                                                            <th scope="col">Nombre d'échantillons</th>
-                                                            <th scope="col">A été exporté</th>
-                                                            <th scope="col">Crée le :</th>
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody>
+                                                {% if countEchantillon != 0 %}
+                                                    {% if counter < 5 %}
                                                         <tr>
                                                             <td>{{ order.id }}</td>
-                                                            <td>{{ countEchantillon }}</td>
+                                                            <td class="text-center">{{ countEchantillon }}</td>
                                                             {% if order.isExported == 0 %}
-                                                                <td>Non</td>
+                                                                <td class="text-center">Non</td>
                                                             {% else %}
-                                                                <td>Oui</td>
+                                                                <td class="text-center">Oui</td>
                                                             {% endif %}
-                                                            <td>{{ order.createdAt | date("d-m-Y") }}</td>
+                                                            <td class="text-center">{{ order.createdAt | date("d-m-Y") }}</td>
                                                             <td>
-                                                                <a href="{{ path('app_details_order', { id : order.id}) }}">Voir
-                                                                    plus</a></td>
+                                                                <a class="qsa-alpha"
+                                                                   href="{{ path('app_details_order', { id : order.id}) }}">+</a>
+                                                            </td>
                                                         </tr>
-                                                        </tbody>
-                                                    </table>
+                                                    {% endif %}
+                                                    {% set counter = counter + 1 %}
                                                 {% endif %}
-                                                {% set counter = counter + 1 %}
-                                            {% else %}
-                                                <strong class="text-center">Pas d'échantillon pour les bons de
-                                                    commmandes</strong>
+
                                             {% endif %}
-
-                                        {% endif %}
+                                        {% endfor %}
                                     {% endfor %}
-                                {% endfor %}
-
+                                    </tbody>
+                                </table>
                             {% else %}
                                 <p class="mb-0 d-flex justify-content-center align-items-center fw-bold">Pas de bons de
                                     commandes
