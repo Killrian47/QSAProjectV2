@@ -88,17 +88,15 @@ class OrderController extends AbstractController
 
     #[Route('/supprimer-bon-de-commande-sans-échantillons', name: 'app_delete_all_orders_without_echantillons')]
     #[IsGranted("ROLE_ADMIN")]
-    public function deleteOrder(EntityManagerInterface $manager, OrderRepository $orderRepository): RedirectResponse
+    public function deleteOrder(EntityManagerInterface $manager, OrderRepository $orderRepository, Request $request): RedirectResponse
     {
         $orders = $orderRepository->findAll();
-        $all = [];
         foreach ($orders as $order) {
             if (empty($order->getEchantillons()->toArray())) {
                 $manager->remove($order);
             }
         }
         $manager->flush();
-
 
         $this->addFlash('success', 'Tous les bons de commandes sans échantillons ont été supprimés !');
         return $this->redirectToRoute('app_admin');

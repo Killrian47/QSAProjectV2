@@ -22,7 +22,7 @@ class EntrepriseController extends AbstractController
     ): Response
     {
 
-        $query = $manager->createQuery('SELECT o FROM App\Entity\Order o WHERE o.entreprise = ' . $id);
+        $query = $manager->createQuery('SELECT o FROM App\Entity\Order o WHERE o.entreprise = ' . $id . ' ORDER BY o.createdAt DESC');
         $pagination = $paginator->paginate($query, $request->query->getInt('page', 1), 5);
 
 
