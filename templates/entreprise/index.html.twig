@@ -46,9 +46,7 @@
                 </table>
             {% endif %}
         </div>
-        <div class="pagination">
-
-
+        <div class="pagination col-12">
 
             {% for page in pagination.pageRange %}
                 {% if pagination.currentPageNumber == page %}
@@ -62,14 +60,16 @@
 
             {% set nbTotalPage = pagination.totalItemCount / pagination.itemNumberPerPage %}
 
-            <div class="d-flex">
-                {% if pagination.currentPageNumber > 1 %}
-                    <a class="me-3" href="{{ path('app_entreprise', {'id': entreprise.id, 'page': pagination.currentPageNumber - 1}) }}">Précédent</a>
-                {% endif %}
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex">
+                    {% if pagination.currentPageNumber > 1 %}
+                        <a class="me-3" href="{{ path('app_entreprise', {'id': entreprise.id, 'page': pagination.currentPageNumber - 1}) }}">Précédent</a>
+                    {% endif %}
 
-                {% if pagination.currentPageNumber < nbTotalPage %}
-                    <a href="{{ path('app_entreprise', {'id': entreprise.id, 'page': pagination.currentPageNumber + 1}) }}">Suivant</a>
-                {% endif %}
+                    {% if pagination.currentPageNumber < nbTotalPage %}
+                        <a href="{{ path('app_entreprise', {'id': entreprise.id, 'page': pagination.currentPageNumber + 1}) }}">Suivant</a>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </div>

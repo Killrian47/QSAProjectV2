@@ -5,18 +5,45 @@
 {% block body %}
     <h1>Numéro de commande {{ order.id }}</h1>
     <a href="{{ path('app_home') }}">Retour à l'accueil</a>
-    {% for echantillon in echantillons %}
-        {{ dump(echantillon) }}
-    {% endfor %}
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Numéro de lot</th>
+            <th scope="col">Nom du produit</th>
+            <th scope="col">Nom du fournisseur</th>
+            <th scope="col">Conditionnement</th>
+            <th scope="col">Température du produit</th>
+            <th scope="col">Température de l'enceinte</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for echantillon in echantillons %}
+            <tr>
+                <td>{{ echantillon.numberLot }}</td>
+                <td>{{ echantillon.productName }}</td>
+                <td>{{ echantillon.fournisseur }}</td>
+                <td>{{ echantillon.conditionnement }}</td>
+                <td>{{ echantillon.tempProduct }}</td>
+                <td>{{ echantillon.tempEnceinte }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
     {% if order.isExported == 0 %}
         {% if app.user.id == order.entreprise.id %}
             <a href="{{ path('app_add_missing_echantillon', {'id': order.id}) }}">Ajouter de nouveaux échantillons</a>
         {% endif %}
-        {% for role in app.user.roles %}
-            {% if role == 'ROLE_ADMIN' %}
-                <a class="btn btn-primary" href="{{ path('export_order', {'id': order.id}) }}">Exporter les échantillons en XLSX</a>
-            {% endif %}
-        {% endfor %}
-        {% else %}
+        {% if is_granted('ROLE_ADMIN') %}
+            <a class="btn btn-primary" href="{{ path('export_order', {'id': order.id}) }}">Exporter les échantillons en
+                XLSX</a>
+        {% endif %}
+    {% else %}
+    {% endif %}
+    {% if is_granted('ROLE_ADMIN') %}
+        {% if order.isExported == 1 %}
+            <a class="btn qsa-btn" href="{{ path('export_order', { id : order.id}) }}">Exporter à nouveau le bon de
+                commande</a>
+        {% endif %}
     {% endif %}
 {% endblock %}
