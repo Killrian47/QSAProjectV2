@@ -15,10 +15,29 @@
                     <a href="{{ path('app_forgot_password_request') }}" class="mb-3">Réinitialiser mon mot de passe</a>
                 </div>
             </div>
-            <div>
-                <p>Vos pdf a disposition :</p>
-                {% for file in app.user.pdfs %}
-                    <a href="{{ path('app_pdf', { slug : file.slug}) }}" target="_blank" >{{ file.slug }}</a>
+            <div class="mt-3">
+                {% set fileNotChecked = [] %}
+                {% for file in pdf %}
+                    {% if file.isChecked == 0 %}
+                        {% set fileNotChecked = fileNotChecked|merge([file]) %}
+                    {% endif %}
+                {% endfor %}
+                <h3 class="text-center mb-3">Vos documents </h3>
+                {% if fileNotChecked is not empty %}
+                    <h5>Vos nouveaux documents :</h5>
+                    {% for file in fileNotChecked %}
+                    <p><a href="{{ path('app_pdf', { slug : file.slug}) }}" target="_blank">{{ file.slug }}</a>
+                        ajouté
+                        le {{ file.createdAt | date('d-m-Y') }}</p><br>
+                    {% endfor %}
+                {% endif %}
+                <h5>Vos anciens documents :</h5>
+                {% for file in pdf %}
+                    {% if file.isChecked == 1 %}
+                        <p><a href="{{ path('app_pdf', { slug : file.slug}) }}" target="_blank">{{ file.slug }}</a>
+                            ajouté
+                            le {{ file.createdAt | date('d-m-Y') }}</p><br>
+                    {% endif %}
                 {% endfor %}
             </div>
         </div>

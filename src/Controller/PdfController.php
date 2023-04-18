@@ -39,8 +39,8 @@ class PdfController extends AbstractController
 
                 $originaleFileName = pathinfo($fileName->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFileName = $slugger->slug($originaleFileName);
-                $pdf->setSlug($safeFileName . '.' . $fileName->guessExtension());
                 $newFileName = $safeFileName . '_' . uniqid() . '.' . $fileName->guessExtension();
+                $pdf->setSlug($newFileName);
 
                 try {
                     $fileName->move(
@@ -57,6 +57,7 @@ class PdfController extends AbstractController
             }
             $pdf->setEntreprise($form->get('entreprise')->getData());
             $pdf->setCreatedAt($date1);
+            $pdf->setIsChecked(false);
 
             $mail = (new Email())
                 ->from($this->getUser()->getEmail())
@@ -81,7 +82,7 @@ class PdfController extends AbstractController
     }
 
     #[Route('/pdf/{slug}', name: 'app_pdf')]
-    public function afficherPdf(string $slug, PDF $PDF): Response
+    public function afficherPdf(string $slug, PDF $PDF, EntityManagerInterface $manager): Response
     {
         $pathFile = $this->getParameter('pdf_dir').'/'. $PDF->getFile();
 
@@ -100,6 +101,10 @@ class PdfController extends AbstractController
             $slug
         );
         $response->headers->set('Content-Disposition', $disposition);
+
+        $PDF->setIsChecked(true);
+        $manager->persist($PDF);
+        $manager->flush();
 
         return $response;
     }

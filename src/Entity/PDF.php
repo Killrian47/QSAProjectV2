@@ -25,6 +25,9 @@ class PDF
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $createdAt = null;
 
+    #[ORM\Column]
+    private ?bool $isChecked = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -74,6 +77,18 @@ class PDF
     public function setCreatedAt(?\DateTimeImmutable $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function isIsChecked(): ?bool
+    {
+        return $this->isChecked;
+    }
+
+    public function setIsChecked(bool $isChecked): self
+    {
+        $this->isChecked = $isChecked;
 
         return $this;
     }
