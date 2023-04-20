@@ -27,7 +27,7 @@
     {% include '_includes/header.html.twig' %}
     <div class="fake-top col-12"></div>
 {% endblock %}
-<div class="w-50 mx-auto mt-2 mb-3">
+<div class="col-11 col-md-8 col-lg-6 mx-auto mt-2 mb-3">
     {% for category, messages in app.flashes %}
         {% for message in messages %}
             <div class="alert alert-{{ category }} mb-0">

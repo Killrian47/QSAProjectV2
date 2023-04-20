@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Form\ChangePasswordType;
+use App\Repository\PDFRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,7 +21,7 @@ class AccountController extends AbstractController
     }
 
     #[Route('/compte', name: 'app_account')]
-    public function index(): Response
+    public function index(PDFRepository $PDFRepository): Response
     {
         if ($this->getUser() === null) {
             return $this->redirectToRoute('app_login');
@@ -31,8 +32,11 @@ class AccountController extends AbstractController
             return $this->redirectToRoute('app_edit_password');
         }
 
+        $pdf = $PDFRepository->findBy(['entreprise' => $this->getUser()], ['createdAt' => 'DESC']);
+
+
         return $this->render('account/index.html.twig', [
-            'controller_name' => 'AccountController',
+            'pdf' => $pdf
         ]);
     }
 
@@ -42,7 +46,6 @@ class AccountController extends AbstractController
         $user = $this->getUser();
         $form = $this->createForm(ChangePasswordType::class, $user);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $old_pwd = $form->get('old_password')->getData();
             if ($encoder->isPasswordValid($user, $old_pwd)) {
