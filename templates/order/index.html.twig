@@ -35,12 +35,20 @@
         <div class="d-none d-md-block qsa-nav-bar">
             {% if app.user %}
                 <ul class="d-flex justify-content-center">
-                    <li class="p-2 qsa-link"><a href="{{ path('app_home') }}" class=" qsa-link-header">Toutes vos
-                            analyses</a></li>
-                    <li class="p-2 qsa-link"><a href="{{ path('app_account') }}" class=" qsa-link-header">Mon compte</a>
-                    </li>
-                    <li class="p-2 qsa-link"><a href="{{ path('app_logout') }}" class=" qsa-link-header">Se
-                            déconnecter</a></li>
+                    <a href="{{ path('app_home') }}" class=" qsa-link-header">
+                        <li class="p-2 qsa-link">Toutes vos
+                            analyses
+                        </li>
+                    </a>
+                    <a href="{{ path('app_account') }}" class=" qsa-link-header">
+                        <li class="p-2 qsa-link">Mon compte
+                        </li>
+                    </a>
+                    <a href="{{ path('app_logout') }}" class=" qsa-link-header">
+                        <li class="p-2 qsa-link">Se
+                            déconnecter
+                        </li>
+                    </a>
                 </ul>
             {% endif %}
         </div>
