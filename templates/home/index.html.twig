@@ -20,6 +20,12 @@
                     <p>Numéro du bon de commande : <strong>{{ order.id }}</strong></p>
 
                     <p>Vous avez envoyé {{ countEchantillons }} échantillons</p>
+                    <p>A été traiter ? {% if order.isExported == 0 %}
+                            Non
+                        {% else %}
+                            Oui
+                        {% endif %}</p>
+                    <p>Vous avez créé ce bon de commande le <strong>{{ order.createdAt | date('d-m-Y') }}</strong></p>
                     <a href="{{ path('app_details_order', { id : order.id}) }}">Voir plus de détails</a>
                 </div>
 

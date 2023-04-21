@@ -30,7 +30,7 @@ class HomeController extends AbstractController
 
         $echantillons = [];
         $user = $this->getUser();
-        $orders = $orderRepository->findBy(['entreprise' => $user]);
+        $orders = $orderRepository->findBy(['entreprise' => $user], ['createdAt' => 'DESC']);
         foreach ($orders as $order) {
             $echantillons[] = $echantillonRepository->findBy(['numberOrder' => $order]);
         }
