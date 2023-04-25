@@ -25,7 +25,7 @@ class CSVDownloadController extends AbstractController
         // Forcer le téléchargement plutôt que l'affichage dans le navigateur
         $disposition = $response->headers->makeDisposition(
             ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-            'QSA_xlsx_model.xlsx'
+            'QSA_model.xlsx'
         );
 
         $response->headers->set('Content-Disposition', $disposition);
@@ -48,7 +48,7 @@ class CSVDownloadController extends AbstractController
         // Forcer le téléchargement plutôt que l'affichage dans le navigateur
         $disposition = $response->headers->makeDisposition(
             ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-            'QSA_xlsx_model.csv'
+            'QSA_model.csv'
         );
 
         $response->headers->set('Content-Disposition', $disposition);
