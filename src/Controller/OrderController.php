@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Echantillon;
 use App\Entity\Order;
 use App\Form\EchantillonType;
+use App\Form\ExcelType;
 use App\Repository\EchantillonRepository;
 use App\Repository\EntrepriseRepository;
 use App\Repository\OrderRepository;
@@ -12,10 +13,12 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\OptimisticLockException;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -125,32 +128,59 @@ class OrderController extends AbstractController
 
     }
 
-    #[Route('/par-excel/{id}', name: 'app_add_echantillon_by_excel')]
+    #[Route('/ajouter-des-échantillons-par-un-excel/{id}', name: 'app_add_echantillon_by_excel')]
     public function addEchantillonByExcel(Request $request, Order $order, EntityManagerInterface $manager)
     {
-        $echantillon = new Echantillon;
-        $form = $this->createForm(EchantillonType::class, $echantillon);
+        $form = $this->createForm(ExcelType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $echantillon->setEntreprise($this->getUser());
-            $echantillon->setNumberOrder($order);
-            $echantillon->setConditionnement($form->get('conditionnement')->getData());
-            $echantillon->setDateOfManufacturing($form->get('dateOfManufacturing')->getData());
-            $echantillon->setTempEnceinte($form->get('tempEnceinte')->getData());
-            $echantillon->setFournisseur($form->get('fournisseur')->getData());
-            $echantillon->setTempProduct($form->get('tempProduct')->getData());
-            $echantillon->setDatePrelevement($form->get('datePrelevement')->getData());
-            $echantillon->setDlcDluo($form->get('dlcDluo')->getData());
+            $file = $form->get('csv_file')->getData();
+            if (!$file) {
+                throw new FileException("Le fichier n'a pas été téléchargé");
+            }
 
-            $manager->persist($echantillon);
+            // Définir le chemin de stockage du fichier
+            $fileName = uniqid() . '.' . $file->getClientOriginalExtension();
+            $filePath = $this->getParameter('kernel.project_dir') . '/public/uploads/' . $fileName;
+
+            // Déplacer le fichier vers le répertoire de stockage
+            $file->move($this->getParameter('kernel.project_dir') . '/public/uploads', $fileName);
+
+            // Importer les données depuis le fichier Excel
+            $reader = IOFactory::createReaderForFile($filePath);
+            $reader->setReadDataOnly(true);
+            $spreadsheet = $reader->load($filePath);
+            $worksheet = $spreadsheet->getActiveSheet();
+            $rows = $worksheet->toArray();
+
+            array_shift($rows);
+            // Insérer les données dans la base de données
+            foreach ($rows as $row) {
+                $echantillon = new Echantillon(); // Remplacez VotreEntite par le nom de votre entité
+                $echantillon->setEntreprise($this->getUser());
+                $echantillon->setNumberOrder($order);
+                $echantillon->setProductName($row[0]);
+                $echantillon->setNumberLot($row[1]);
+                $echantillon->setFournisseur($row[2]);
+                $echantillon->setTempProduct($row[3]);
+                $echantillon->setTempEnceinte($row[4]);
+                $manager->persist($echantillon);
+            }
             $manager->flush();
+
+            // Supprimer le fichier importé
+            unlink($filePath);
+
+            // Afficher un message de confirmation
+            $this->addFlash('success', 'Vos échantillons ont été envoyés');
+
             return $this->redirectToRoute('app_add_echantillon_by_excel', [
                 'id' => $order->getId(),
             ]);
         }
 
-        return $this->render('order/index.html.twig', [
+        return $this->render('order/addManyByExcel.html.twig', [
             'form' => $form->createView()
         ]);
     }
@@ -166,6 +196,7 @@ class OrderController extends AbstractController
             }
         }
         $manager->flush();
+
 
         $this->addFlash('success', 'Tous les bons de commandes sans échantillons ont été supprimés !');
         return $this->redirectToRoute('app_admin');
