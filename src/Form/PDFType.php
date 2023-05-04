@@ -49,10 +49,11 @@ class PDFType extends AbstractType
                     'class' => 'mt-2'
                 ]
             ])
-            ->add('Envoyer', SubmitType::class, [
+            ->add('submit', SubmitType::class, [
                 'attr' => [
                     'class' => 'btn qsa-btn mt-3'
                 ],
+                'label' => 'Envoyer'
             ])
 
         ;
