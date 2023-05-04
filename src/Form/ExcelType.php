@@ -17,12 +17,12 @@ class ExcelType extends AbstractType
             ->add('csv_file', FileType::class, [
                 'constraints' => [
                     new File([
-                        'extensions' => [
-                            'csv',
-                            'xlsx',
+                        'mimeTypes' => [
+                            'text/csv',
+                            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
                         ],
+
                         'mimeTypesMessage' => 'Merci d\'envoyer un fichier .csv ou .xlsx',
-                        'extensionsMessage' => 'Merci d\'envoyer un fichier .csv ou .xlsx',
                     ])
                 ],
                 'mapped' => false,
